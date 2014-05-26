@@ -120,13 +120,35 @@
 		</script>
 	</head>
 	<body>
+
+		<div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TableSelect (RokeSoftware)</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="simple.html">Simple usage</a></li>
+						<li class="active"><a href="groups.html">Group rows</a></li>
+          </ul>
+
+					<a id="github" class="btn btn-primary navbar-right" href="https://github.com/rokesoftware/tableselect" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub repo</a>
+        </div>
+      </div>
+    </div>
+
 		<div class="container">
 			<div class="row">
 				<div class="col-md-9">
 
-					<h1>Rows groups using the TableSelect plugin</h1>
-					<p>Use up and down arrows, try clicking the rows holding Ctrl or Shift keys. Ctrl + A and ESC work as well!</p>
-
+					<h1>Group rows using the TableSelect plugin</h1>
 					<table class="table" id="table">
 						<thead>
 							<tr>
@@ -234,19 +256,19 @@
 					</table>
 				</div>
 				<div class="col-md-3">
-					<h2>Info</h2>
+					<div class="well">
+						<h2>Instructions</h2>
 
-					<p>
-						<span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.
-					</p>
-					<button id="unselect-all" class="btn btn-primary btn-block">Unselect all</button>
-					<p>
-						You have selected the following people:
-					</p>
-					<ul id="selected-names">
-					</ul>
-					
-					<a class="btn btn-warning btn-block" href="index.html"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+						<p><em>Use up and down arrows (with and withoug Shift), try clicking the rows holding Ctrl or Shift keys. Ctrl + A and ESC work as well!</em></p>
+						<hr/>
+
+						<p><span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.</p>
+						<p>
+							<button id="unselect-all" class="btn btn-primary btn-block">Unselect all</button>
+						</p>
+						<p>You have selected the following people:</p>
+						<ul id="selected-names"></ul>
+					</div>
 				</div>
 			</div>
 		</div>

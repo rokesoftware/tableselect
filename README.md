@@ -1,4 +1,4 @@
-# TableSelect plugin
+# TableSelect
 
 A jQuery plugin implementing table rows selection by mouse and keyboard comfortably.
 
@@ -20,5 +20,3 @@ data that can be used to implement a variety of things. See the
 It is a jQuery plugin so you need [jQuery](http://code.jquery.com/) and
 [jQuery UI (widget at least)](http://code.jquery.com/ui/). Use the latest versions
 possible, please.
-
-It looks good with [Bootstrap](http://getbootstrap.com) or any other CSS framework.
