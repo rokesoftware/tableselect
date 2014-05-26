@@ -4,7 +4,7 @@
  * Version: 0.1.0
  * Requires jQuery v2.0 or later
  *
- * Examples at http://tadeaspetak.net/roke/tableselect/
+ * Examples at http://tadeaspetak.net/roke/tableselect/demo/
  * License: https://github.com/rokesoftware/tableselect/blob/master/License
  *
  * Copyright 2014 Roke Software - info@roke.cz
