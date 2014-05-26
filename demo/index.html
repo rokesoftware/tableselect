@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="A jQuery plugin implementing table rows selection by mouse and keyboard comfortably.">
+		<meta name="author" content="Tadeáš Peták, Roke Software">
+		<link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+		<title>Simple | TableSelect</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="screen.css" rel="stylesheet">
+
+		<!-- jQuery -->
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+		<script src="../source/roke.tableSelect.js"></script>
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		<script type="text/javascript">
+			$(function() {
+				var $table = $('#table');
+				$table.tableselect({
+					change: function(e, data) {
+						var plugin = $table.data("roke-tableselect");
+
+						// change only when all changes are over
+						if (data.followedBySelect !== true) {
+							//row counts
+							$("#selected-count").text(plugin.getSelected().size());
+							$("#rows-count").text(plugin.getAll().size());
+
+							//people's names
+							var names = '';
+							plugin.getSelected().each(function() {
+								names += ('<li>' + $(this).find("td:first").text() + '</li>');
+							});
+							$("#selected-names").html(names);
+						}
+					}
+				});
+
+				$("#unselect-all").click(function() {
+					var plugin = $table.data('roke-tableselect');
+					plugin.unselect(plugin.getAll(), {all: true});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9">
+					<h1>A simple usage of the TableSelect plugin</h1>
+					<p>Use up and down arrows, try clicking the rows holding Ctrl or Shift keys. Ctrl + A and ESC work as well!</p>
+					<table class="table" id="table">
+						<thead>
+							<tr>
+								<th>Firstname</th>
+								<th>Lastname</th>		
+								<th>Points</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Jill</td>
+								<td>Smith</td>		
+								<td>50</td>
+							</tr>
+							<tr>
+								<td>Eve</td>
+								<td>Jackson</td>		
+								<td>94</td>
+							</tr>
+							<tr>
+								<td>John</td>
+								<td>Doe</td>		
+								<td>80</td>
+							</tr>
+							<tr>
+								<td>Adam</td>
+								<td>Johnson</td>		
+								<td>67</td>
+							</tr>
+							<tr>
+								<td>Jill</td>
+								<td>Smith</td>		
+								<td>50</td>
+							</tr>
+							<tr>
+								<td>Eve</td>
+								<td>Jackson</td>		
+								<td>94</td>
+							</tr>
+							<tr>
+								<td>John</td>
+								<td>Doe</td>		
+								<td>80</td>
+							</tr>
+							<tr>
+								<td>Adam</td>
+								<td>Johnson</td>		
+								<td>67</td>
+							</tr>
+							<tr>
+								<td>Jill</td>
+								<td>Smith</td>		
+								<td>50</td>
+							</tr>
+							<tr>
+								<td>Eve</td>
+								<td>Jackson</td>		
+								<td>94</td>
+							</tr>
+							<tr>
+								<td>John</td>
+								<td>Doe</td>		
+								<td>80</td>
+							</tr>
+							<tr>
+								<td>Adam</td>
+								<td>Johnson</td>		
+								<td>67</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-3">
+					<h2>Info</h2>
+
+					<p><span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.</p>
+					<button id="unselect-all" class="btn btn-primary btn-block">Unselect all</button>
+
+					<p>You have selected the following people:</p>
+					<ul id="selected-names"></ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
