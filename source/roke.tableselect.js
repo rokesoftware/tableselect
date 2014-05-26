@@ -1,3 +1,16 @@
+/**
+ * @preserve
+ * TableSelect - jQuery Plugin
+ * Version: 0.1.0
+ * Requires jQuery v2.0 or later
+ *
+ * Examples at http://tadeaspetak.net/roke/tableselect/
+ * License: https://github.com/rokesoftware/tableselect/blob/master/License
+ *
+ * Copyright 2014 Roke Software - info@roke.cz
+ *
+ */
+
 //make sure a number fits in certain boundaries
 if (!Number.prototype.fitIn) {
 	Number.prototype.fitIn = function(min, max) {
@@ -54,7 +67,7 @@ if (!Number.prototype.fitIn) {
 						this.$el.disableSelection();
 					}
 				},
-				'mouseup': function(e) {
+				'mouseup': function() {
 					//re-enable selection
 					this.$el.enableSelection();
 				},
@@ -319,6 +332,7 @@ if (!Number.prototype.fitIn) {
 		/**
 		 * Get all the rows in the table (tbody).
 		 * 
+		 * @param {boolean} refresh Refresh the rows.
 		 * @returns {jQuery}
 		 */
 		getAll: function(refresh) {
@@ -327,6 +341,11 @@ if (!Number.prototype.fitIn) {
 			}
 			return this.$all;
 		},
+		/**
+		 * Refresh all the rows (e.g. after loading rows by AJAX).
+		 * 
+		 * @returns {undefined}
+		 */
 		refresh: function() {
 			var $all = this.$el.find('tbody tr');
 			//filter ignored
