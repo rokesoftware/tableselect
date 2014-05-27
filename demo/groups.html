@@ -27,7 +27,26 @@
 
 		<script type="text/javascript">
 			$(function() {
-				var $table = $('#table');
+				var $table = $('#table')
+						//update info on change
+						.on('tableselectselect tableselectunselect', function(e, data) {
+							var plugin = $table.data("roke-tableselect");
+
+							// change info when all changes are over
+							if (data.followedBySelect !== true) {
+								//row counts
+								$("#selected-count").text(plugin.getSelected().size());
+								$("#rows-count").text(plugin.getAll().size());
+
+								//people
+								var names = '';
+								plugin.getSelected().each(function() {
+									names += ($(this).find("td:first").text() + ", ");
+								});
+								names = names.substring(0, names.length - 2);
+								$("#selected-names").html(names);
+							}
+						});
 
 				$table.tableselect({
 					ignore: '.group-selector',
@@ -49,13 +68,13 @@
 					 * @returns {undefined}
 					 */
 					select: function(e, data) {
-						if(data.init){
+						if (data.init) {
 							return;
 						}
-						
+
 						var plugin = $table.data("roke-tableselect"),
 								$rows = data.rows;
-						
+
 						//all rows are being selected (e.g. Ctrl + A) -> this is much more efficient
 						if (data.all) {
 							$table.find("input[data-group]").prop('checked', true);
@@ -81,13 +100,13 @@
 					 * @returns {undefined}
 					 */
 					unselect: function(e, data) {
-						if(data.init){
+						if (data.init) {
 							return;
 						}
-						
+
 						var plugin = $table.data("roke-tableselect"),
 								$rows = data.rows;
-						
+
 						//all rows are being unselected (e.g. ESC) -> this is much more efficient
 						if (data.all) {
 							$table.find("input[data-group]").prop('checked', false);
@@ -98,26 +117,6 @@
 								$table.find("input[data-group=" + $(this).data('group') + "]").prop("checked", false);
 							});
 						}
-					}
-				});
-
-				//update info on change
-				$table.on('tableselectselect tableselectunselect', function(e, data) {
-					var plugin = $table.data("roke-tableselect");
-
-					// change info when all changes are over
-					if (data.followedBySelect !== true) {
-						//row counts
-						$("#selected-count").text(plugin.getSelected().size());
-						$("#rows-count").text(plugin.getAll().size());
-
-						//people
-						var names = '';
-						plugin.getSelected().each(function() {
-							names += ($(this).find("td:first").text() + ", ");
-						});
-						names = names.substring(0, names.length - 2);
-						$("#selected-names").html(names);
 					}
 				});
 

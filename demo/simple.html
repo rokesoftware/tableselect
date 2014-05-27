@@ -27,8 +27,7 @@
 
 		<script type="text/javascript">
 			$(function() {
-				var $table = $('#table');
-				$table.tableselect()
+				var $table = $('#table')
 						//update info on change
 						.on('tableselectselect tableselectunselect', function(e, data) {
 							var plugin = $table.data("roke-tableselect");
@@ -48,6 +47,9 @@
 								$("#selected-names").html(names);
 							}
 						});
+				//init the plugin
+				$table.tableselect();
+
 
 				$("#unselect-all").click(function() {
 					var plugin = $table.data('roke-tableselect');
