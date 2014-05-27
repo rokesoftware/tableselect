@@ -12,7 +12,7 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="screen.css" rel="stylesheet">
+		<link href="demos.css" rel="stylesheet">
 
 		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -28,148 +28,146 @@
 		<script type="text/javascript">
 			$(function() {
 				var $table = $('#table');
-				$table.tableselect({
-					change: function(e, data) {
-						var plugin = $table.data("roke-tableselect");
+				$table.tableselect()
+						//update info on change
+						.on('tableselectselect tableselectunselect', function(e, data) {
+							var plugin = $table.data("roke-tableselect");
 
-						// change only when all changes are over
-						if (data.followedBySelect !== true) {
-							//row counts
-							$("#selected-count").text(plugin.getSelected().size());
-							$("#rows-count").text(plugin.getAll().size());
+							// change only when all changes are over
+							if (data.followedBySelect !== true) {
+								//row counts
+								$("#selected-count").text(plugin.getSelected().size());
+								$("#rows-count").text(plugin.getAll().size());
 
-							//people's names
-							var names = '';
-							plugin.getSelected().each(function() {
-								names += ('<li>' + $(this).find("td:first").text() + '</li>');
-							});
-							$("#selected-names").html(names);
-						}
-					}
-				});
+								//people's names
+								var names = '';
+								plugin.getSelected().each(function() {
+									names += ($(this).find("td:first").text() + ", ");
+								});
+								names = names.substring(0, names.length - 2);
+								$("#selected-names").html(names);
+							}
+						});
 
 				$("#unselect-all").click(function() {
 					var plugin = $table.data('roke-tableselect');
 					plugin.unselect(plugin.getAll(), {all: true});
+					$(this).blur();
 				});
 			});
 		</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">TableSelect (RokeSoftware)</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li class="active"><a href="simple.html">Simple usage</a></li>
-						<li><a href="groups.html">Group rows</a></li>
-          </ul>
+		<div id="header" class="container">
+			<div class="row">
+				<a id="github" href="https://github.com/rokesoftware/tableselect" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub</a>
+				<h3 id="header-brand"><a href="index.html" title="Home">Roke TableSelect</a></h3>
+				<ul id="navigation" class="nav">
+					<li><a href="index.html" title="Home">Home</a></li>
+					<li class="active"><a href="simple.html" title="Simple usage">Simple usage</a></li>
+					<li><a href="groups.html" title="Group rows">Group rows</a></li>
+				</ul>
+			</div>
+		</div>
 
-					<a id="github" class="btn btn-primary navbar-right" href="https://github.com/rokesoftware/tableselect" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub repo</a>
-        </div>
-      </div>
-    </div>
 
 		<div class="container">
 			<div class="row">
-				<div class="col-md-9">
-					<h1>A simple usage of the TableSelect plugin</h1>
-					<table class="table" id="table">
-						<thead>
-							<tr>
-								<th>Firstname</th>
-								<th>Lastname</th>		
-								<th>Points</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr>
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr>
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr>
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
-							<tr>
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr>
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr>
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr>
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
-							<tr>
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr>
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr>
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr>
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="col-md-3">
-					<div class="well">
-						<h2>Instructions</h2>
+				<h1>A simple usage</h1>
 
-						<p><em>Use up and down arrows (with and withoug Shift), try clicking the rows holding Ctrl or Shift keys. Ctrl + A and ESC work as well!</em></p>
-						<hr/>
-						
-						<p><span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.</p>
-						<p>
-							<button id="unselect-all" class="btn btn-primary btn-block">Unselect all</button>
-						</p>
-						<p>You have selected the following people:</p>
-						<ul id="selected-names"></ul>
-					</div>
+				<p>A simple usage of the plugin.</p>
+
+				<p class="instructions">
+					<span class="glyphicon glyphicon-info-sign"></span>
+					Use up and down arrows (with and without shift), try clicking the rows holding ctrl or shift keys.
+					Ctrl + A and ESC work as well!
+				</p>
+
+				<div id="toolbar" class="well">
+					<span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.
+					<button id="unselect-all" class="btn btn-primary pull-right">Unselect all</button>
+
+					<hr/>
+					You have selected the following people: <span id="selected-names"></span>.
 				</div>
+
+				<table class="table" id="table">
+					<thead>
+						<tr>
+							<th>Firstname</th>
+							<th>Lastname</th>		
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr>
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr>
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr>
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
+						<tr>
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr>
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr>
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr>
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
+						<tr>
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr>
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr>
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr>
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="footer" class="container">
+			<div class="row">
+				<p>TableSelect jQuery plugin, &copy; RokeSoftware</p>
 			</div>
 		</div>
 	</body>

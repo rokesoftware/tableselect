@@ -22,7 +22,7 @@ if (!Number.prototype.fitIn) {
 }
 
 (function($) {
-	
+
 	//scroll to the given element 
 	$.fn.scrollTo = function() {
 		if (this.size()) {
@@ -30,7 +30,7 @@ if (!Number.prototype.fitIn) {
 			var viewportHeight = window.innerHeight;
 			var elTop = this.offset().top;
 			var elHeight = this.outerHeight();
-			
+
 			//scroll up
 			if (elTop + elHeight > yScroll + viewportHeight) {
 				$(window).scrollTop(elTop + elHeight - viewportHeight);
@@ -200,14 +200,20 @@ if (!Number.prototype.fitIn) {
 			});
 
 			//scrolling
-			this._on(this.$el,{
-				'tableselectchange': function(){
+			this._on(this.$el, {
+				'tableselectselect': function() {
 					this.getSelectionEnd().scrollTo();
+				},
+				'tableselectunselect': function(e, data) {
+					if (!data.followedBySelect) {
+						this.getSelectionEnd().scrollTo();
+					}
 				}
 			});
-			
+
 			//useful when initializing the plugin on a page
-			this._trigger('change', {init: true});
+			this._trigger('select', null, {init: true});
+			this._trigger('unselect', null, {init: true});
 		},
 		/**
 		 * Is the row selected?
@@ -242,9 +248,8 @@ if (!Number.prototype.fitIn) {
 			$rows.removeClass(this.options.selected).removeClass(this.options.selectedExtra).removeClass(this.options.selectionStart).removeClass(this.options.selectionEnd);
 
 			if (options.trigger) {
-				this._trigger('change', null, {
+				this._trigger('unselect', null, {
 					rows: $rows,
-					type: 'unselect',
 					followedBySelect: options.followedBySelect
 				});
 			}
@@ -282,9 +287,8 @@ if (!Number.prototype.fitIn) {
 
 			// trigger
 			if (options.trigger) {
-				this._trigger('change', null, {
-					rows: $rows,
-					type: 'select'
+				this._trigger('select', null, {
+					rows: $rows
 				});
 			}
 
@@ -324,8 +328,7 @@ if (!Number.prototype.fitIn) {
 			this.getAll().eq(end).addClass(this.options.selectionEnd);
 
 			//trigger select
-			this._trigger("change", null, {
-				type: 'select',
+			this._trigger("select", null, {
 				rows: this.getSelected()
 			});
 		},

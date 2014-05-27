@@ -12,7 +12,7 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="screen.css" rel="stylesheet">
+		<link href="demos.css" rel="stylesheet">
 
 		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -32,7 +32,7 @@
 				$table.tableselect({
 					ignore: '.group-selector',
 					/**
-					 * Get a group.
+					 * Get a group of rows.
 					 * 
 					 * @param {jQuery|Number} $row
 					 * @returns {jQuery} All the rows in the group.
@@ -41,56 +41,83 @@
 						var group = typeof $row === "object" ? $row.attr("data-group") : $row;
 						return this.getAll().filter("[data-group=" + group + "]");
 					},
-					change: function(e, data) {
+					/**
+					 * On selection.
+					 * 
+					 * @param {type} e
+					 * @param {type} data
+					 * @returns {undefined}
+					 */
+					select: function(e, data) {
+						if(data.init){
+							return;
+						}
+						
 						var plugin = $table.data("roke-tableselect"),
 								$rows = data.rows;
-
-						// change info when all changes are over
-						if (data.followedBySelect !== true) {
-							//row counts
-							$("#selected-count").text(plugin.getSelected().size());
-							$("#rows-count").text(plugin.getAll().size());
-
-							//people
-							var names = '';
-							plugin.getSelected().each(function() {
-								names += ('<li>' + $(this).find("td:first").text() + '</li>');
+						
+						//all rows are being selected (e.g. Ctrl + A) -> this is much more efficient
+						if (data.all) {
+							$table.find("input[data-group]").prop('checked', true);
+						}
+						else {
+							$rows.each(function() {
+								var $row = $(this),
+										group = $row.data('group'),
+										$group = plugin.options.getGroup.call(plugin, group);
+								//check if all the rows in the group are selected
+								if ($group.size() === $group.filter("." + plugin.options.selected).size()) {
+									//check the checkbox
+									$table.find("input[data-group=" + group + "]").prop("checked", true);
+								}
 							});
-							$("#selected-names").html(names);
 						}
+					},
+					/**
+					 * On un-selection.
+					 * 
+					 * @param {Event} e
+					 * @param {object} data
+					 * @returns {undefined}
+					 */
+					unselect: function(e, data) {
+						if(data.init){
+							return;
+						}
+						
+						var plugin = $table.data("roke-tableselect"),
+								$rows = data.rows;
+						
+						//all rows are being unselected (e.g. ESC) -> this is much more efficient
+						if (data.all) {
+							$table.find("input[data-group]").prop('checked', false);
+						}
+						else {
+							//uncheck the group checkbox for any row that is being unselected
+							$rows.each(function() {
+								$table.find("input[data-group=" + $(this).data('group') + "]").prop("checked", false);
+							});
+						}
+					}
+				});
 
-						//selecting rows
-						if (data.type === 'select') {
-							//all rows are being selected (e.g. Ctrl + A) -> this is much more efficient
-							if (data.all) {
-								$table.find("input[data-group]").prop('checked', true);
-							}
-							else {
-								$rows.each(function() {
-									var $row = $(this),
-											group = $row.data('group'),
-											$group = plugin.options.getGroup.call(plugin, group);
-									//check if all the rows in the group are selected
-									if ($group.size() === $group.filter("." + plugin.options.selected).size()) {
-										//check the checkbox
-										$table.find("input[data-group=" + group + "]").prop("checked", true);
-									}
-								});
-							}
+				//update info on change
+				$table.on('tableselectselect tableselectunselect', function(e, data) {
+					var plugin = $table.data("roke-tableselect");
 
-						}
-						else if (data.type === 'unselect') {
-							//all rows are being unselected (e.g. ESC) -> this is much more efficient
-							if (data.all) {
-								$table.find("input[data-group]").prop('checked', false);
-							}
-							else {
-								//uncheck the group checkbox for any row that is being unselected
-								$rows.each(function() {
-									$table.find("input[data-group=" + $(this).data('group') + "]").prop("checked", false);
-								});
-							}
-						}
+					// change info when all changes are over
+					if (data.followedBySelect !== true) {
+						//row counts
+						$("#selected-count").text(plugin.getSelected().size());
+						$("#rows-count").text(plugin.getAll().size());
+
+						//people
+						var names = '';
+						plugin.getSelected().each(function() {
+							names += ($(this).find("td:first").text() + ", ");
+						});
+						names = names.substring(0, names.length - 2);
+						$("#selected-names").html(names);
 					}
 				});
 
@@ -114,6 +141,7 @@
 				$("#unselect-all").click(function() {
 					var plugin = $table.data('roke-tableselect');
 					plugin.unselect(plugin.getAll(), {all: true});
+					$(this).blur();
 				});
 
 			});
@@ -121,155 +149,149 @@
 	</head>
 	<body>
 
-		<div class="navbar navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">TableSelect (RokeSoftware)</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="simple.html">Simple usage</a></li>
-						<li class="active"><a href="groups.html">Group rows</a></li>
-          </ul>
-
-					<a id="github" class="btn btn-primary navbar-right" href="https://github.com/rokesoftware/tableselect" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub repo</a>
-        </div>
-      </div>
-    </div>
+		<div id="header" class="container">
+			<div class="row">
+				<a id="github" href="https://github.com/rokesoftware/tableselect" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub</a>
+				<h3 id="header-brand"><a href="index.html" title="Home">Roke TableSelect</a></h3>
+				<ul id="navigation" class="nav">
+					<li><a href="index.html" title="Home">Home</a></li>
+					<li><a href="simple.html" title="Simple usage">Simple usage</a></li>
+					<li class="active"><a href="groups.html" title="Group rows">Group rows</a></li>
+				</ul>
+			</div>
+		</div>
 
 		<div class="container">
 			<div class="row">
-				<div class="col-md-9">
+				<h1>Group rows</h1>
 
-					<h1>Group rows using the TableSelect plugin</h1>
-					<table class="table" id="table">
-						<thead>
-							<tr>
-								<th>Firstname</th>
-								<th>Lastname</th>		
-								<th>Points</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="group-selector">
-								<td colspan="3"><input type="checkbox" data-group="1" /></td>
-							</tr>
-							<tr data-group="1">
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr data-group="1">
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr data-group="1">
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr data-group="1" class="group-last">
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
-							<tr class="group-selector">
-								<td colspan="3"><input type="checkbox" data-group="2" /></td>
-							</tr>
-							<tr data-group="2">
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr data-group="2">
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr data-group="2">
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr data-group="2" class="group-last">
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
+				<p>This example shows how you can create and manage groups of rows.</p>
 
-							<tr class="group-selector">
-								<td colspan="3"><input type="checkbox" data-group="3" /></td>
-							</tr>
-							<tr data-group="3">
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr data-group="3">
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr data-group="3">
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr data-group="3" class="group-last">
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
+				<p class="instructions">
+					<span class="glyphicon glyphicon-info-sign"></span>
+					Use up and down arrows (with and without shift), try clicking the rows holding ctrl or shift keys.
+					Ctrl + A and ESC work as well!
+				</p>
 
-							<tr class="group-selector">
-								<td colspan="3"><input type="checkbox" data-group="4" /></td>
-							</tr>
-							<tr data-group="4">
-								<td>Jill</td>
-								<td>Smith</td>		
-								<td>50</td>
-							</tr>
-							<tr data-group="4">
-								<td>Eve</td>
-								<td>Jackson</td>		
-								<td>94</td>
-							</tr>
-							<tr data-group="4">
-								<td>John</td>
-								<td>Doe</td>		
-								<td>80</td>
-							</tr>
-							<tr data-group="4" class="group-last">
-								<td>Adam</td>
-								<td>Johnson</td>		
-								<td>67</td>
-							</tr>
-						</tbody>
-					</table>
+				<div id="toolbar" class="well">
+					<span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.
+					<button id="unselect-all" class="btn btn-primary pull-right">Unselect all</button>
+
+					<hr/>
+					You have selected the following people: <span id="selected-names"></span>.
 				</div>
-				<div class="col-md-3">
-					<div class="well">
-						<h2>Instructions</h2>
 
-						<p><em>Use up and down arrows (with and withoug Shift), try clicking the rows holding Ctrl or Shift keys. Ctrl + A and ESC work as well!</em></p>
-						<hr/>
+				<table class="table" id="table">
+					<thead>
+						<tr>
+							<th>Firstname</th>
+							<th>Lastname</th>		
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="group-selector">
+							<td colspan="3"><input type="checkbox" data-group="1" /></td>
+						</tr>
+						<tr data-group="1">
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr data-group="1">
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr data-group="1">
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr data-group="1" class="group-last">
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
+						<tr class="group-selector">
+							<td colspan="3"><input type="checkbox" data-group="2" /></td>
+						</tr>
+						<tr data-group="2">
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr data-group="2">
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr data-group="2">
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr data-group="2" class="group-last">
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
 
-						<p><span id="selected-count">0</span> rows selected out of <span id="rows-count">0</span>.</p>
-						<p>
-							<button id="unselect-all" class="btn btn-primary btn-block">Unselect all</button>
-						</p>
-						<p>You have selected the following people:</p>
-						<ul id="selected-names"></ul>
-					</div>
-				</div>
+						<tr class="group-selector">
+							<td colspan="3"><input type="checkbox" data-group="3" /></td>
+						</tr>
+						<tr data-group="3">
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr data-group="3">
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr data-group="3">
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr data-group="3" class="group-last">
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
+
+						<tr class="group-selector">
+							<td colspan="3"><input type="checkbox" data-group="4" /></td>
+						</tr>
+						<tr data-group="4">
+							<td>Jill</td>
+							<td>Smith</td>		
+							<td>50</td>
+						</tr>
+						<tr data-group="4">
+							<td>Eve</td>
+							<td>Jackson</td>		
+							<td>94</td>
+						</tr>
+						<tr data-group="4">
+							<td>John</td>
+							<td>Doe</td>		
+							<td>80</td>
+						</tr>
+						<tr data-group="4" class="group-last">
+							<td>Adam</td>
+							<td>Johnson</td>		
+							<td>67</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="footer" class="container">
+			<div class="row">
+				<p>TableSelect jQuery plugin, &copy; RokeSoftware</p>
 			</div>
 		</div>
 	</body>

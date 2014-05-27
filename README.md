@@ -2,12 +2,14 @@
 
 A jQuery plugin implementing table rows selection by mouse and keyboard comfortably.
 
-## Usage
+## Why?
 
-Use **up and down arrows** to move around the table, **hold shift** in case you want to
-select a certain range of rows. A **simple click** with the mouse selects an individual
-row, **holding ctrl adds the row** to the current selection (or removes if it is already
-present). **Clicking while holding shift** selects ranges of rows in the typical way.
+Of course, there are plugins implementing the same kind of functionality as this one.
+But we needed something fairly light, mimicking the interface of Windows Explorer as much as possible
+with all the
+useful events fired... and writing it seemed easier (and more fun!) than bending anybody else's work.
+
+## Usage
 
 It is a typical jQuery plugin built using the [Widget Factoy](http://api.jqueryui.com/jquery.widget/),
 use it as such. On any selection change, **tableselectchange** event is fired with some additional
@@ -18,5 +20,4 @@ data that can be used to implement a variety of things. See the
 ## Dependencies
 
 It is a jQuery plugin so you need [jQuery](http://code.jquery.com/) and
-[jQuery UI (widget at least)](http://code.jquery.com/ui/). Use the latest versions
-possible, please.
+[jQuery UI (widget at least)](http://code.jquery.com/ui/).

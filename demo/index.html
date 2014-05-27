@@ -12,7 +12,7 @@
 
 		<!-- Bootstrap core CSS -->
 		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="screen.css" rel="stylesheet">
+		<link href="demos.css" rel="stylesheet">
 
 		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -28,61 +28,55 @@
 	</head>
 	<body>
 
-		<div class="navbar navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">TableSelect (RokeSoftware)</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="simple.html">Simple usage</a></li>
-						<li><a href="groups.html">Group rows</a></li>
-          </ul>
-
-					<a id="github" class="btn btn-primary navbar-right" href="https://github.com/rokesoftware/tableselect" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub repo</a>
-        </div>
-      </div>
-    </div>
+		<div id="header" class="container">
+			<div class="row">
+				<a id="github" href="https://github.com/rokesoftware/tableselect" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub</a>
+				<h3 id="header-brand"><a href="index.html" title="Home">Roke TableSelect</a></h3>
+				<ul id="navigation" class="nav">
+					<li class="active"><a href="index.html" title="Home">Home</a></li>
+					<li><a href="simple.html" title="Simple usage">Simple usage</a></li>
+					<li><a href="groups.html" title="Group rows">Group rows</a></li>
+				</ul>
+			</div>
+		</div>
 
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
-					<h1>TableSelect</h1>
+				<h1>TableSelect</h1>
 
-					<p>A jQuery plugin implementing table rows selection by mouse and keyboard comfortably.</p>
+				<p>A jQuery plugin implementing table rows selection by mouse and keyboard comfortably.</p>
 
-					<h2>Usage</h2>
+				<h2>Why?</h2>
 
-					<p>
-						Use <strong>up and down arrows</strong> to move around the table, <strong>hold shift</strong> in case you want to
-						select a certain range of rows. A <strong>simple click</strong> with the mouse selects an individual
-						row, <strong>holding ctrl adds the row</strong> to the current selection (or removes if it is already
-						present). <strong>Clicking while holding shift</strong> selects ranges of rows in the typical way.
-					<p>
+				<p>
+					Of course, there are plugins implementing the same kind of functionality as this one.
+					But we needed something fairly light, mimicking the interface of Windows Explorer as much as possible
+					with all the
+					useful events fired... and writing it seemed easier (and more fun!) than bending anybody else's work.
+				</p>
 
-					<p>
-						It is a typical jQuery plugin built using the
-						<a href="http://api.jqueryui.com/jquery.widget/" target="_blank">Widget Factoy</a>, use it as such.
-						On any selection change, <strong>tableselectchange</strong> event is fired with some additional
-						data that can be used to implement a variety of things. See the
-						<a href="simple.html">simple demo</a> for the basic usage and the
-						<a href="groups.html">groups demo</a> for something a bit more sophisticated.
-					</p>
+				<h2>Usage</h2>
 
-					<h2>Dependencies</h2>
-					<p>
-						It is a jQuery plugin so you need <a href="http://code.jquery.com/" target="_blank">jQuery</a> and
-						<a href="http://code.jquery.com/ui/" target="_blank">jQuery UI (widget at least)</a>.
-						Use the latest versions	possible, please.
-					</p>
-				</div>
+				<p>
+					It is a typical jQuery plugin built using the
+					<a href="http://api.jqueryui.com/jquery.widget/" target="_blank">Widget Factoy</a>, use it as such.
+					On any selection change, <strong>tableselectchange</strong> event is fired with some additional
+					data that can be used to implement a variety of things. See the
+					<a href="simple.html">simple demo</a> for the basic usage and the
+					<a href="groups.html">groups demo</a> for something a bit more sophisticated.
+				</p>
+
+				<h2>Dependencies</h2>
+				<p>
+					It is a jQuery plugin, so you need <a href="http://code.jquery.com/" target="_blank">jQuery</a> and
+					<a href="http://code.jquery.com/ui/" target="_blank">jQuery UI (widget at least)</a>.
+				</p>
+			</div>
+		</div>
+
+		<div id="footer" class="container">
+			<div class="row">
+				<p>TableSelect jQuery plugin, &copy; RokeSoftware</p>
 			</div>
 		</div>
 	</body>
