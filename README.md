@@ -14,8 +14,8 @@ useful events fired... and writing it seemed easier (and more fun!) than bending
 It is a typical jQuery plugin built using the [Widget Factoy](http://api.jqueryui.com/jquery.widget/),
 use it as such. On any selection change, **select** or **unselect** events are fired with some additional
 data that can be used to implement a variety of things. See the
-[simple demo](http://tadeaspetak.net/roke/tableselect/demo/simple.html) for the basic usage and the
-[groups demo](http://tadeaspetak.net/roke/tableselect/demo/groups.html) for something a bit more sophisticated.
+[simple demo](http://roke.tadeaspetak.net/tableselect/demo/simple.html) for the basic usage and the
+[groups demo](http://roke.tadeaspetak.net/tableselect/demo/groups.html) for something a bit more sophisticated.
 
 ## Dependencies
 
