@@ -4,7 +4,7 @@ A jQuery plugin implementing table rows selection by mouse and keyboard comforta
 
 ## Why?
 
-Of course, there are plugins implementing the same kind of functionality as this one.
+Of course, there is a number of plugins implementing the same kind of functionality as this one.
 But we needed something fairly light, mimicking the interface of Windows Explorer as much as possible
 with all the
 useful events fired... and writing it seemed easier (and more fun!) than bending anybody else's work.
